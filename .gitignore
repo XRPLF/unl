@@ -1,0 +1,6 @@
+# temp
+*.tmp
+tmp
+
+# env vars
+.env
