@@ -8,3 +8,5 @@ The process of creating a signed UNL is manual and intentionally non-automated.
 
 To suggest an update to this list, make a Pull Request. If approved, the next build of the UNL will include these changes.
 
+- Only changes to `unl/unl-raw.yaml` are required in your Pull Request.
+
