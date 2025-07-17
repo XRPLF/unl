@@ -2,9 +2,9 @@ name: Create UNL Json
 
 on:
   push:
-    # branches: [main]
-    paths:
-      - "data/unl-raw.yaml"
+    branches: [mankins/automate]
+    # paths:
+    #   - "data/unl-raw.yaml"
   workflow_dispatch: # enables "Run workflow" button in UI
     inputs:
       dry_run:
