@@ -23,6 +23,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug GitHub context
+        run: |
+          echo "GITHUB_REF: $GITHUB_REF"
+          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
+          echo "GITHUB_WORKFLOW_REF: $GITHUB_WORKFLOW_REF"
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Ref: ${{ github.ref }}"
+
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
