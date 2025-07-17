@@ -5,12 +5,13 @@ on:
     branches: [mankins/automate]
     # paths:
     #   - "data/unl-raw.yaml"
-  workflow_dispatch: # enables "Run workflow" button in UI
+  workflow_dispatch:
     inputs:
       dry_run:
-        description: "Skip upload"
+        description: "Run without uploading to GCP"
         required: false
-        default: "true"
+        default: "false"
+
 permissions:
   contents: write # for creating a release
   id-token: write # for GCP OIDC
@@ -44,27 +45,33 @@ jobs:
           cd scripts/xrpl-cli
           pnpm install --frozen-lockfile
 
-      # - name: Authenticate with GCP
-      #   uses: google-github-actions/auth@v2
-      #   with:
-      #     workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-      #     service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Generate expiration and timestamp
+        id: meta
+        run: |
+          TS=$(date -u +"%Y%m%d%H%M")
+          if date -d "+4 months" >/dev/null 2>&1; then
+            EXP=$(date -d "+4 months" +"%Y-%m-%d")
+          else
+            EXP=$(date -v+4m +"%Y-%m-%d")
+          fi
+          echo "ts=$TS" >> $GITHUB_OUTPUT
+          echo "exp=$EXP" >> $GITHUB_OUTPUT
 
       - name: Generate UNL
         run: |
-          TS=$(date -u +"%Y%m%d%H%M")
-          EXP=$(date -d "+4 months" +"%Y-%m-%d")
-          node scripts/xrpl-cli/src/xrplf-cli.js unl generate --validators="data/unl-raw.yaml" --expiration $EXP --quiet --output "unl-${TS}.json"
-          echo "FILE_NAME=unl-${TS}.json" >> $GITHUB_ENV
-          echo "RELEASE_NAME=unl-${TS}" >> $GITHUB_ENV
+          node scripts/xrpl-cli/src/xrplf-cli.js unl generate \
+            --validators="data/unl-raw.yaml" \
+            --expiration="${{ steps.meta.outputs.exp }}" \
+            --quiet \
+            --output="unl-${{ steps.meta.outputs.ts }}.json"
 
-      # - name: Upload to GCP Bucket
-      #   run: |
-      #     gsutil cp $FILE_NAME gs://your-bucket-name/unl/$FILE_NAME
-
-      # - name: Create GitHub Release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     name: ${{ env.RELEASE_NAME }}
-      #     tag_name: ${{ env.RELEASE_NAME }}
-      #     files: ${{ env.FILE_NAME }}
+      - name: Upload to GCP (if not dry run)
+        if: ${{ github.event.inputs.dry_run != 'true' && steps.meta.outputs.ts != '' }}
+        run: |
+          gsutil cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
