@@ -83,7 +83,7 @@ jobs:
             --quiet \
             --output="unl-${{ steps.meta.outputs.ts }}.json"
 
-      - name: Upload to GCP (if not dry run)
+      - name: Upload to GCP
         if: ${{ github.event.inputs.dry_run != 'true' && steps.meta.outputs.ts != '' }}
         run: |
           gsutil cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
