@@ -65,6 +65,13 @@ jobs:
           export_environment_variables: true
           create_credentials_file: true
 
+      - name: Unset conflicting GCP env vars
+        run: |
+          unset CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+          unset GOOGLE_APPLICATION_CREDENTIALS
+          unset GOOGLE_GHA_CREDS_PATH
+          echo "Unset GCP override vars"
+
       - name: Generate expiration and timestamp
         id: meta
         run: |
