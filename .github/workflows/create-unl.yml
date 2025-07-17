@@ -42,7 +42,7 @@ jobs:
       - name: Install CLI
         run: |
           cd scripts/xrpl-cli
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       # - name: Authenticate with GCP
       #   uses: google-github-actions/auth@v2
