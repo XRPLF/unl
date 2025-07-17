@@ -77,6 +77,11 @@ jobs:
           echo "ts=$TS" >> $GITHUB_OUTPUT
           echo "exp=$EXP" >> $GITHUB_OUTPUT
 
+      - name: Show active GCP identity
+        run: |
+          gcloud auth list
+          gcloud config list
+
       - name: Generate UNL
         run: |
           node scripts/xrpl-cli/src/xrplf-cli.js unl generate \
