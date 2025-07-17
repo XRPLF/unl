@@ -53,7 +53,8 @@ jobs:
       - name: Generate UNL
         run: |
           TS=$(date -u +"%Y%m%d%H%M")
-          node scripts/xrpl-cli/src/xrplf-cli.js unl generate --validators="data/unl-raw.yaml" --expiration 2026-01-13 --quiet --output "unl-${TS}.json"
+          EXP=$(date -d "+4 months" +"%Y-%m-%d")
+          node scripts/xrpl-cli/src/xrplf-cli.js unl generate --validators="data/unl-raw.yaml" --expiration $EXP --quiet --output "unl-${TS}.json"
           echo "FILE_NAME=unl-${TS}.json" >> $GITHUB_ENV
           echo "RELEASE_NAME=unl-${TS}" >> $GITHUB_ENV
 
