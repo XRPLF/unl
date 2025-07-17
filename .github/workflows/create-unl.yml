@@ -61,7 +61,9 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_environment_variables: true
+          create_credentials_file: true
 
       - name: Generate expiration and timestamp
         id: meta
@@ -77,8 +79,6 @@ jobs:
 
       - name: Generate UNL
         run: |
-          unset GOOGLE_APPLICATION_CREDENTIALS
-          unset CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
           node scripts/xrpl-cli/src/xrplf-cli.js unl generate \
           --validators="data/unl-raw.yaml" \
           --expiration="${{ steps.meta.outputs.exp }}" \
