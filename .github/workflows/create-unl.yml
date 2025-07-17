@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   publish:
-    name: Build & Upload UNL
+    name: Build UNL
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js (or your CLI environment)
         uses: actions/setup-node@v4
