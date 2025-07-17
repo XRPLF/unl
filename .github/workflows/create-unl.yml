@@ -1,0 +1,62 @@
+name: Create UNL Json
+
+on:
+  push:
+    # branches: [main]
+    paths:
+      - "data/unl-raw.yaml"
+  workflow_dispatch: # enables "Run workflow" button in UI
+    inputs:
+      dry_run:
+        description: "Skip upload"
+        required: false
+        default: "true"
+permissions:
+  contents: write # for creating a release
+  id-token: write # for GCP OIDC
+  actions: read
+
+jobs:
+  publish:
+    name: Build & Upload UNL
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js (or your CLI environment)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install CLI
+        run: |
+          cd scripts/xrpl-cli
+          pnpm ci
+
+      # - name: Authenticate with GCP
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      #     service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Generate UNL
+        run: |
+          TS=$(date -u +"%Y%m%d%H%M")
+          node scripts/xrpl-cli/src/xrplf-cli.js unl generate --validators="data/unl-raw.yaml" --expiration 2026-01-13 --quiet --output "unl-${TS}.json"
+          echo "FILE_NAME=unl-${TS}.json" >> $GITHUB_ENV
+          echo "RELEASE_NAME=unl-${TS}" >> $GITHUB_ENV
+
+      # - name: Upload to GCP Bucket
+      #   run: |
+      #     gsutil cp $FILE_NAME gs://your-bucket-name/unl/$FILE_NAME
+
+      # - name: Create GitHub Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     name: ${{ env.RELEASE_NAME }}
+      #     tag_name: ${{ env.RELEASE_NAME }}
+      #     files: ${{ env.FILE_NAME }}
