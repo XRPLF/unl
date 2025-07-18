@@ -41,6 +41,9 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
       - id: auth
         name: Authenticate with GCP
         uses: google-github-actions/auth@v2
@@ -48,21 +51,19 @@ jobs:
           workload_identity_provider: projects/815786927258/locations/global/workloadIdentityPools/github-pool/providers/github-provider
           project_id: xrplf-infra-shared
           service_account: github-oidc-unl@xrplf-infra-shared.iam.gserviceaccount.com
-          token_format: access_token
-
-          # export_environment_variables: true
-          # create_credentials_file: true
+          export_environment_variables: true
+          create_credentials_file: true
           # access_token_lifetime: "120s"
           # token_format: "access_token"
 
-      - name: Verify identity
-        run: |
-          echo "OIDC → GCP token:"
-          echo "${{ steps.auth.outputs.auth_token }}"
-          curl -H "Authorization: Bearer ${{ steps.auth.outputs.auth_token }}" \
-              https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}:generateAccessToken \
-              -H "Content-Type: application/json" \
-              -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"]}' | jq
+      # - name: Verify identity
+      #   run: |
+      #     echo "OIDC → GCP token:"
+      #     echo "${{ steps.auth.outputs.auth_token }}"
+      #     curl -H "Authorization: Bearer ${{ steps.auth.outputs.auth_token }}" \
+      #         https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}:generateAccessToken \
+      #         -H "Content-Type: application/json" \
+      #         -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"]}' | jq
 
       - name: Show active account
         run: |
