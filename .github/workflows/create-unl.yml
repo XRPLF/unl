@@ -48,7 +48,6 @@ jobs:
           workload_identity_provider: "projects/815786927258/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
           service_account: "github-oidc-unl@xrplf-infra-shared.iam.gserviceaccount.com"
           project_id: "xrplf-infra-shared"
-          token_format: "access_token"
           export_environment_variables: true
           create_credentials_file: true
           access_token_lifetime: "120s"
