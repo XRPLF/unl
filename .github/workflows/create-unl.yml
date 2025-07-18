@@ -25,15 +25,6 @@ jobs:
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       XRPL_CLI_SECRET_BACKEND: ${{ secrets.XRPL_CLI_SECRET_BACKEND }}
     steps:
-      # - name: Debug GitHub context
-      #   run: |
-      #     echo "GITHUB_REF: $GITHUB_REF"
-      #     echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
-      #     echo "GITHUB_WORKFLOW_REF: $GITHUB_WORKFLOW_REF"
-      #     echo "Repository: ${{ github.repository }}"
-      #     echo "Actor: ${{ github.actor }}"
-      #     echo "Ref: ${{ github.ref }}"
-
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
@@ -45,57 +36,11 @@ jobs:
         name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
-          # workload_identity_provider: projects/815786927258/locations/global/workloadIdentityPools/github-pool/providers/github-provider
           project_id: xrplf-infra-shared
           credentials_json: ${{ secrets.GCP_SA_KEY }}
-          # project_id:        ${{ secrets.GCP_PROJECT_ID }}
-          # service_account: github-oidc-unl@xrplf-infra-shared.iam.gserviceaccount.com
-          # export_environment_variables: true
-          # create_credentials_file: true
-          # access_token_lifetime: "120s"
-          # token_format: "access_token"
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
-
-      # - name: Verify via ADC
-      #   run: |
-      #     # Should print a valid token (no 403)
-      #     echo "::add-mask::$(gcloud auth application-default print-access-token)"
-
-      #     # Also prove we can talk to the API
-      #     gcloud projects describe "${{ env.GCP_PROJECT_ID }}" --format="value(projectId)"
-
-      # - name: Verify identity
-      #   run: |
-      #     echo "OIDC → GCP token:"
-      #     echo "${{ steps.auth.outputs.auth_token }}"
-      #     curl -H "Authorization: Bearer ${{ steps.auth.outputs.auth_token }}" \
-      #         https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}:generateAccessToken \
-      #         -H "Content-Type: application/json" \
-      #         -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"]}' | jq
-
-      # - name: Show active account
-      #   run: |
-      #     TOKEN=$(gcloud auth print-access-token)
-      #     echo "::add-mask::$TOKEN"
-      #     gcloud auth list --filter="status:ACTIVE" --format="value(account)"
-      #     gcloud config list project --format="value(core.project)"
-
-      # - name: Show active GCP identity
-      #   run: |
-      #     gcloud auth list
-      #     gcloud auth list --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-      #     gcloud config list
-
-      # - name: Fetch validator keys secret
-      #   id: get-secret
-      #   run: |
-      #     SECRET=$(gcloud secrets versions access latest --secret="unl_validator_keys" --project="${{ env.GCP_PROJECT_ID }}")
-      #     echo "UNL_VALIDATOR_KEYS<<EOF" >> $GITHUB_ENV
-      #     echo "$SECRET" >> $GITHUB_ENV
-      #     echo "EOF" >> $GITHUB_ENV
-      #     echo "::add-mask::$UNL_VALIDATOR_KEYS"
 
       - name: Generate expiration and timestamp
         id: meta
@@ -138,3 +83,10 @@ jobs:
           gsutil -h "Cache-Control:public, max-age=30, stale-while-revalidate=86400, stale-if-error=604800" \
                 -h "Content-Type:application/json" \
                 cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
+
+      - name: Set the next pointer
+        run: |
+          gsutil -h "Cache-Control:public, max-age=0" \
+                -h "Content-Type:application/json" \
+                -h "x-goog-meta-timestamp:${{ steps.meta.outputs.ts }}" \
+                cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/next.json
