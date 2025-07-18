@@ -41,7 +41,8 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Authenticate with GCP
+      - id: auth
+        name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -61,8 +62,9 @@ jobs:
 
       - name: Show active GCP identity
         run: |
-          gcloud auth application-default login --brief --cred-file="$GOOGLE_APPLICATION_CREDENTIALS"
+          gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
           gcloud auth list
+          gcloud auth list --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
           gcloud config list
 
       - name: Fetch validator keys secret
