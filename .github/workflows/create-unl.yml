@@ -51,6 +51,14 @@ jobs:
           create_credentials_file: true
           access_token_lifetime: "120s"
 
+      - name: Dump OIDC repository claim
+        id: dump
+        run: |
+          echo "${{ steps.auth.outputs.id_token }}" \
+            | cut -d'.' -f2 \
+            | base64 --decode \
+            | jq .repository
+
       - name: Verify identity
         run: |
           echo "OIDC → GCP token:"
