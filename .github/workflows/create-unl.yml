@@ -41,21 +41,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js (or your CLI environment)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Install CLI
-        run: |
-          cd scripts/xrpl-cli
-          pnpm install --frozen-lockfile
-
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
@@ -90,6 +75,21 @@ jobs:
           fi
           echo "ts=$TS" >> $GITHUB_OUTPUT
           echo "exp=$EXP" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js (or your CLI environment)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Install CLI
+        run: |
+          cd scripts/xrpl-cli
+          pnpm install --frozen-lockfile
 
       - name: Generate UNL
         run: |
