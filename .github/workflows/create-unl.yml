@@ -55,8 +55,8 @@ jobs:
           # access_token_lifetime: "120s"
           # token_format: "access_token"
 
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v2
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
       # - name: Verify via ADC
       #   run: |
