@@ -65,12 +65,14 @@ jobs:
           export_environment_variables: true
           create_credentials_file: true
 
-      - name: Unset conflicting GCP env vars
+      - name: Fetch validator keys secret
+        id: get-secret
         run: |
-          unset CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
-          unset GOOGLE_APPLICATION_CREDENTIALS
-          unset GOOGLE_GHA_CREDS_PATH
-          echo "Unset GCP override vars"
+          SECRET=$(gcloud secrets versions access latest --secret="unl_validator_keys" --project="${{ env.GCP_PROJECT_ID }}")
+          echo "UNL_VALIDATOR_KEYS<<EOF" >> $GITHUB_ENV
+          echo "$SECRET" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "::add-mask::$UNL_VALIDATOR_KEYS"
 
       - name: Generate expiration and timestamp
         id: meta
