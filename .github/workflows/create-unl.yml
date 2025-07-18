@@ -63,7 +63,15 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_environment_variables: true
-          create_credentials_file: true
+          # create_credentials_file: true
+        run: |
+          gcloud auth list
+          gcloud config list
+
+      - name: Show active GCP identity
+        run: |
+          gcloud auth list
+          gcloud config list
 
       - name: Fetch validator keys secret
         id: get-secret
@@ -85,11 +93,6 @@ jobs:
           fi
           echo "ts=$TS" >> $GITHUB_OUTPUT
           echo "exp=$EXP" >> $GITHUB_OUTPUT
-
-      - name: Show active GCP identity
-        run: |
-          gcloud auth list
-          gcloud config list
 
       - name: Generate UNL
         run: |
