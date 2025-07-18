@@ -55,8 +55,8 @@ jobs:
           # access_token_lifetime: "120s"
           # token_format: "access_token"
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v2
 
       # - name: Verify via ADC
       #   run: |
@@ -88,14 +88,14 @@ jobs:
       #     gcloud auth list --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
       #     gcloud config list
 
-      - name: Fetch validator keys secret
-        id: get-secret
-        run: |
-          SECRET=$(gcloud secrets versions access latest --secret="unl_validator_keys" --project="${{ env.GCP_PROJECT_ID }}")
-          echo "UNL_VALIDATOR_KEYS<<EOF" >> $GITHUB_ENV
-          echo "$SECRET" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-          echo "::add-mask::$UNL_VALIDATOR_KEYS"
+      # - name: Fetch validator keys secret
+      #   id: get-secret
+      #   run: |
+      #     SECRET=$(gcloud secrets versions access latest --secret="unl_validator_keys" --project="${{ env.GCP_PROJECT_ID }}")
+      #     echo "UNL_VALIDATOR_KEYS<<EOF" >> $GITHUB_ENV
+      #     echo "$SECRET" >> $GITHUB_ENV
+      #     echo "EOF" >> $GITHUB_ENV
+      #     echo "::add-mask::$UNL_VALIDATOR_KEYS"
 
       - name: Generate expiration and timestamp
         id: meta
