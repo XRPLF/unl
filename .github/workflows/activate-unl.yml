@@ -2,8 +2,11 @@ name: Activate UNL
 
 on:
   schedule:
+    # - cron: '0 15 1-7 * 2'  # FIRST TUESDAY OF THE MONTH => minute 0, hour 15, day-of-month 1–7, any month, weekday=Tue(2)
+    # test crons:
+    - cron: "0 15 * * 1-5" # 15:00 UTC, Monday through Friday
     # - cron: '0 15 * * *' # once per day at 15:00 UTC
-    - cron: "*/30 * * * *" # every 30 minutes
+    # - cron: "*/30 * * * *" # every 30 minutes
   workflow_dispatch: # allow manual trigger too
 
 permissions:
