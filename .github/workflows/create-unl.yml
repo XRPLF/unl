@@ -45,11 +45,13 @@ jobs:
         name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: projects/815786927258/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          # workload_identity_provider: projects/815786927258/locations/global/workloadIdentityPools/github-pool/providers/github-provider
           project_id: xrplf-infra-shared
-          service_account: github-oidc-unl@xrplf-infra-shared.iam.gserviceaccount.com
-          export_environment_variables: true
-          create_credentials_file: true
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          # project_id:        ${{ secrets.GCP_PROJECT_ID }}
+          # service_account: github-oidc-unl@xrplf-infra-shared.iam.gserviceaccount.com
+          # export_environment_variables: true
+          # create_credentials_file: true
           # access_token_lifetime: "120s"
           # token_format: "access_token"
 
