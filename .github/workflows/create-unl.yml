@@ -1,0 +1,93 @@
+name: Create UNL Json
+
+on:
+  push:
+    branches: [mankins/automate]
+    # paths:
+    #   - "data/unl-raw.yaml"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without uploading to GCP"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write # for creating a release
+  id-token: write # for GCP OIDC
+  actions: read
+
+jobs:
+  build:
+    name: Build UNL
+    runs-on: ubuntu-latest
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      XRPL_CLI_SECRET_BACKEND: ${{ secrets.XRPL_CLI_SECRET_BACKEND }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: auth
+        name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: xrplf-infra-shared
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Generate expiration and timestamp
+        id: meta
+        run: |
+          TS=$(date -u +"%Y%m%d%H%M")
+          if date -d "+4 months" >/dev/null 2>&1; then
+            EXP=$(date -d "+4 months" +"%Y-%m-%d")
+          else
+            EXP=$(date -v+4m +"%Y-%m-%d")
+          fi
+          echo "ts=$TS" >> $GITHUB_OUTPUT
+          echo "exp=$EXP" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js (or your CLI environment)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Install CLI
+        run: |
+          cd scripts/xrpl-cli
+          pnpm install --frozen-lockfile
+
+      - name: Generate UNL
+        run: |
+          node scripts/xrpl-cli/src/xrplf-cli.js unl generate \
+          --validators="data/unl-raw.yaml" \
+          --expiration="${{ steps.meta.outputs.exp }}" \
+          --quiet \
+          --output="unl-${{ steps.meta.outputs.ts }}.json"
+
+      - name: Upload to GCP
+        if: ${{ github.event.inputs.dry_run != 'true' && steps.meta.outputs.ts != '' }}
+        run: |
+          gsutil -h "Cache-Control:public, max-age=30, stale-while-revalidate=86400, stale-if-error=604800" \
+                -h "Content-Type:application/json" \
+                cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
+
+      - name: Set the next pointer
+        run: |
+          gsutil -o GSUtil:parallel_composite_upload_threshold=10M \
+                -h "Cache-Control:public, max-age=0" \
+                -h "Content-Type:application/json" \
+                -h "x-goog-meta-timestamp:${{ steps.meta.outputs.ts }}" \
+                cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/next.json

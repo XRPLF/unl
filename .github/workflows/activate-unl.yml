@@ -1,0 +1,37 @@
+name: Activate UNL
+
+on:
+  schedule:
+    # - cron: '0 15 * * *' # once per day at 15:00 UTC
+    - cron: "*/30 * * * *" # every 30 minutes
+  workflow_dispatch: # allow manual trigger too
+
+permissions:
+  contents: write # for creating a release
+  id-token: write # for GCP OIDC
+  actions: read
+
+jobs:
+  copy-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Copy next.json to index file (makes live)
+        run: |
+          gsutil cp gs://xrplf-unl/unl/next.json .
+          LAST_TS=$(gsutil stat gs://xrplf-unl/unl/next.json | grep 'timestamp' | cut -d':' -f2- | xargs)
+
+          # update the main root index (called index.html but content type is application/json)
+          gsutil -h "Cache-Control:public, max-age=30, stale-while-revalidate=86400, stale-if-error=604800" \
+                -h "Content-Type:application/json" \
+                -h "x-goog-meta-timestamp:${LAST_TS}" \
+                cp next.json gs://xrplf-unl/index.html
