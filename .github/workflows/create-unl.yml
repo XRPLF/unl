@@ -21,7 +21,7 @@ jobs:
   build:
     name: Build UNL
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       XRPL_CLI_SECRET_BACKEND: ${{ secrets.XRPL_CLI_SECRET_BACKEND }}
