@@ -56,6 +56,14 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Verify via ADC
+        run: |
+          # Should print a valid token (no 403)
+          gcloud auth application-default print-access-token
+
+          # Also prove we can talk to the API
+          gcloud projects describe "${{ env.GCP_PROJECT_ID }}" --format="value(projectId)"
+
       # - name: Verify identity
       #   run: |
       #     echo "OIDC → GCP token:"
