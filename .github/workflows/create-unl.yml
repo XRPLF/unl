@@ -50,11 +50,12 @@ jobs:
           export_environment_variables: true
           create_credentials_file: true
           access_token_lifetime: "120s"
+          token_format: "access_token"
 
       - name: Dump OIDC repository claim
         id: dump
         run: |
-          echo "${{ steps.auth.outputs.id_token }}" \
+          echo "${{ steps.auth.outputs.auth_token }}" \
             | cut -d'.' -f2 \
             | base64 --decode \
             | jq .repository
