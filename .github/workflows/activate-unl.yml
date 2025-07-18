@@ -30,8 +30,8 @@ jobs:
           gsutil cp gs://xrplf-unl/unl/next.json .
           LAST_TS=$(gsutil stat gs://xrplf-unl/unl/next.json | grep 'timestamp' | cut -d':' -f2- | xargs)
 
-          # update the main root index (called index.html but content type is application/json)
+          # update the main root unl.json
           gsutil -h "Cache-Control:public, max-age=30, stale-while-revalidate=86400, stale-if-error=604800" \
                 -h "Content-Type:application/json" \
                 -h "x-goog-meta-timestamp:${LAST_TS}" \
-                cp next.json gs://xrplf-unl/index.html
+                cp next.json gs://xrplf-unl/unl.json

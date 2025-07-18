@@ -1,10 +1,10 @@
-name: Create UNL Json
+name: Create UNL
 
 on:
   push:
-    branches: [mankins/automate]
-    # paths:
-    #   - "data/unl-raw.yaml"
+    branches: [main]
+    paths:
+      - "data/unl-raw.yaml"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -21,6 +21,7 @@ jobs:
   build:
     name: Build UNL
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
     env:
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       XRPL_CLI_SECRET_BACKEND: ${{ secrets.XRPL_CLI_SECRET_BACKEND }}
@@ -47,9 +48,9 @@ jobs:
         run: |
           TS=$(date -u +"%Y%m%d%H%M")
           if date -d "+4 months" >/dev/null 2>&1; then
-            EXP=$(date -d "+4 months" +"%Y-%m-%d")
+            EXP=$(date -u -d "+4 months" +"%Y-%m-%dT%H:%M:%SZ")
           else
-            EXP=$(date -v+4m +"%Y-%m-%d")
+            EXP=$(date -u -v+4m +"%Y-%m-%dT%H:%M:%SZ")
           fi
           echo "ts=$TS" >> $GITHUB_OUTPUT
           echo "exp=$EXP" >> $GITHUB_OUTPUT
@@ -85,6 +86,7 @@ jobs:
                 cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
 
       - name: Set the next pointer
+        if: ${{ github.event.inputs.dry_run != 'true' && steps.meta.outputs.ts != '' }}
         run: |
           gsutil -o GSUtil:parallel_composite_upload_threshold=10M \
                 -h "Cache-Control:public, max-age=0" \
