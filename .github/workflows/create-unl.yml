@@ -18,7 +18,7 @@ permissions:
   actions: read
 
 jobs:
-  publish:
+  build:
     name: Build UNL
     runs-on: ubuntu-latest
     env:
@@ -50,6 +50,11 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_environment_variables: true
           create_credentials_file: true
+
+      - name: Show active account
+        run: |
+          gcloud auth list --filter="status:ACTIVE" --format="value(account)"
+          gcloud config list project --format="value(core.project)"
 
       - name: Verify identity
         run: |
