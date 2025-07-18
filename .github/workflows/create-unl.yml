@@ -58,13 +58,13 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Verify via ADC
-        run: |
-          # Should print a valid token (no 403)
-          gcloud auth application-default print-access-token
+      # - name: Verify via ADC
+      #   run: |
+      #     # Should print a valid token (no 403)
+      #     echo "::add-mask::$(gcloud auth application-default print-access-token)"
 
-          # Also prove we can talk to the API
-          gcloud projects describe "${{ env.GCP_PROJECT_ID }}" --format="value(projectId)"
+      #     # Also prove we can talk to the API
+      #     gcloud projects describe "${{ env.GCP_PROJECT_ID }}" --format="value(projectId)"
 
       # - name: Verify identity
       #   run: |
@@ -75,18 +75,18 @@ jobs:
       #         -H "Content-Type: application/json" \
       #         -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"]}' | jq
 
-      - name: Show active account
-        run: |
-          TOKEN=$(gcloud auth print-access-token)
-          echo "::add-mask::$TOKEN"
-          gcloud auth list --filter="status:ACTIVE" --format="value(account)"
-          gcloud config list project --format="value(core.project)"
+      # - name: Show active account
+      #   run: |
+      #     TOKEN=$(gcloud auth print-access-token)
+      #     echo "::add-mask::$TOKEN"
+      #     gcloud auth list --filter="status:ACTIVE" --format="value(account)"
+      #     gcloud config list project --format="value(core.project)"
 
-      - name: Show active GCP identity
-        run: |
-          gcloud auth list
-          gcloud auth list --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-          gcloud config list
+      # - name: Show active GCP identity
+      #   run: |
+      #     gcloud auth list
+      #     gcloud auth list --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+      #     gcloud config list
 
       - name: Fetch validator keys secret
         id: get-secret
