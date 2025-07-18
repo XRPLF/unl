@@ -135,4 +135,6 @@ jobs:
       - name: Upload to GCP
         if: ${{ github.event.inputs.dry_run != 'true' && steps.meta.outputs.ts != '' }}
         run: |
-          gsutil cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
+          gsutil -h "Cache-Control:public, max-age=30, stale-while-revalidate=86400, stale-if-error=604800" \
+                -h "Content-Type:application/json" \
+                cp -Z "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
