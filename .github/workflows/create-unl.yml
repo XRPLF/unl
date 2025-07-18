@@ -86,7 +86,7 @@ jobs:
 
       - name: Set the next pointer
         run: |
-          gsutil -o GSUtil:parallel_composite_upload_threshold=10M \ 
+          gsutil -o GSUtil:parallel_composite_upload_threshold=10M \
                 -h "Cache-Control:public, max-age=0" \
                 -h "Content-Type:application/json" \
                 -h "x-goog-meta-timestamp:${{ steps.meta.outputs.ts }}" \
