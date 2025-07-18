@@ -41,11 +41,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug GCP project
-        run: |
-          PARTIAL=$(echo "${{ secrets.GCP_PROJECT_ID }}" | sed -E 's/(...).*(...)/\1...\2/')
-          echo "GCP_PROJECT_ID: $PARTIAL"
-
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
@@ -57,13 +52,16 @@ jobs:
 
       - name: Verify identity
         run: |
-          curl -H "Authorization: Bearer $(gcloud auth print-access-token)" https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}:generateAccessToken \
-            -H "Content-Type: application/json" \
-            -d '{"scope": ["https://www.googleapis.com/auth/cloud-platform"]}' \
-            | jq
+          echo "OIDC → GCP token:"
+          echo "${{ steps.auth.outputs.auth_token }}"
+          curl -H "Authorization: Bearer ${{ steps.auth.outputs.auth_token }}" \
+              https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}:generateAccessToken \
+              -H "Content-Type: application/json" \
+              -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"]}' | jq
 
       - name: Show active GCP identity
         run: |
+          gcloud auth application-default login --brief --cred-file="$GOOGLE_APPLICATION_CREDENTIALS"
           gcloud auth list
           gcloud config list
 
