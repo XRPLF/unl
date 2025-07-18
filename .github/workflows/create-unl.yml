@@ -41,6 +41,11 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug GCP project
+        run: |
+          PARTIAL=$(echo "${{ secrets.GCP_PROJECT_ID }}" | sed -E 's/(...).*(...)/\1...\2/')
+          echo "GCP_PROJECT_ID: $PARTIAL"
+
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
