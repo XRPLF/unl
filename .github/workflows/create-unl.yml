@@ -137,4 +137,4 @@ jobs:
         run: |
           gsutil -h "Cache-Control:public, max-age=30, stale-while-revalidate=86400, stale-if-error=604800" \
                 -h "Content-Type:application/json" \
-                cp -Z "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
+                cp "unl-${{ steps.meta.outputs.ts }}.json" gs://xrplf-unl/unl/unl-${{ steps.meta.outputs.ts }}.json
