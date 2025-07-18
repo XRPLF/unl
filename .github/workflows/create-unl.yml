@@ -64,9 +64,6 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_environment_variables: true
           # create_credentials_file: true
-        run: |
-          gcloud auth list
-          gcloud config list
 
       - name: Show active GCP identity
         run: |
