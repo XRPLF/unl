@@ -1,4 +1,6 @@
 nodes:
+  - id: baddata
+    name: bad data test
   - id: nHBWa56Vr7csoFcCnEPzCCKVvnDQw3L28mATgHYQMGtbEfUjuYyB
     name: xrp.vet
   - id: nHBidG3pZK11zQD6kpNDoAhDxH6WLGui6ZxSbUx7LSqLHsgzMPec
