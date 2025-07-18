@@ -50,6 +50,13 @@ jobs:
           export_environment_variables: true
           create_credentials_file: true
 
+      - name: Verify identity
+        run: |
+          curl -H "Authorization: Bearer $(gcloud auth print-access-token)" https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}:generateAccessToken \
+            -H "Content-Type: application/json" \
+            -d '{"scope": ["https://www.googleapis.com/auth/cloud-platform"]}' \
+            | jq
+
       - name: Show active GCP identity
         run: |
           gcloud auth list
