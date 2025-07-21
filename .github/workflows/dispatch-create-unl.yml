@@ -14,6 +14,9 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
     steps:
       - name: Write private key to file
         run: echo "${{ secrets.AUTOMATOR_PRIVATE_KEY }}" | base64 -d > app-private-key.pem
