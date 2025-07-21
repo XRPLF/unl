@@ -4,13 +4,14 @@ The XRP Ledger Foundation maintains a Unique Node List (UNL) for the XRPL. This 
 
 ## Editing the UNL
 
-The process of creating a signed UNL is manual and intentionally non-automated.
+The process of creating an updated signed UNL is outlined below.
 
 - To suggest an update to this list, [make a Pull Request](https://github.com/XRPLF/unl/pulls).
-- If approved, the next build of the UNL will include these changes.
 - Only changes to `data/unl-raw.yaml` are required in your Pull Request.
-- Once the PR has been approved, it is manually reviewed by the `XRPLF`.
-- The `XRPLF` can then build a new UNL to publish to [https://unl.xrplf.org](https://unl.xrplf.org/).
-- For historical purposes we'll create a [release in the unl repo](https://github.com/XRPLF/unl/releases).
+- Once the PR has been approved and merged into the `main` branch, an automation workflow will run to create a new signed UNL.
+- The signed UNL file will be uploaded to Google Cloud Storage, named `unl/unl-$timestamp.json`.
+- Simultaneously, the same file will be copied to `unl/next.json` which contains the latest version, however not necessarily the currently published version.
+- A cron job will run once per month on the first Tuesday of the month at 15:00 UTC which will:
+  - Copy the `unl/next.json` file to `unl.json` (promote to live).
 
 
