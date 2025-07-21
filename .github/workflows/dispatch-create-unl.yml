@@ -43,7 +43,8 @@ jobs:
 
       - name: Trigger automation workflow
         run: |
-          curl -X POST https://api.github.com/repos/XRPLF/unl-automation/dispatches \
+          curl --fail-with-body --silent --show-error \
+            -X POST https://api.github.com/repos/XRPLF/unl-automation/dispatches \
             -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
             -H "Accept: application/vnd.github+json" \
             -d '{
