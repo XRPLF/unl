@@ -18,7 +18,5 @@ The `id` field is the public key of the validator, and the `name` field is a hum
 
 ## Editing the UNL
 
-The process of creating a signed UNL is manual and intentionally non-automated.
-
 To suggest an update to this list, make a Pull Request. If approved, the next build of the UNL will include these changes.
 
