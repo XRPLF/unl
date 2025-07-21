@@ -1,3 +1,0 @@
-[submodule "scripts/xrpl-cli"]
-	path = scripts/xrpl-cli
-	url = https://github.com/xrplf/xrpl-cli.git
