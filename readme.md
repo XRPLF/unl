@@ -14,4 +14,30 @@ The process of creating an updated signed UNL is outlined below.
 - A cron job will run once per month on the first Tuesday of the month at 15:00 UTC which will:
   - Copy the `unl/next.json` file to `unl.json` (promote to live).
 
+```mermaid
+flowchart TD
+  subgraph Dev[Developer Workflow]
+    A1[Create PR<br/>edit data/unl-raw.yaml]
+    A2[3x XRPLF Team<br/>approve PR]
+    A3[Merge to main]
+  end
 
+  subgraph CI["CI in Private Repo"]
+    direction TB
+    B1[Trigger on merge to main]
+    B2[Checkout public UNL repo]
+    B3[Compile YAML → JSON xrpl-cli compile]
+    B4[Upload timestamped file<br/>unl-YYYYMMDDHHMM.json]
+    B5[Copy to next.json]
+  end
+
+  subgraph Scheduler["Scheduled Promotion"]
+    direction TB
+    C1[Cron: 1st Tuesday @15:00 UTC]
+    C2[Copy next.json → live path/index.json]
+  end
+
+  A1 --> A2 --> A3 --> B1
+  B1 --> B2 --> B3 --> B4 --> B5 --> C1
+  C1 --> C2
+```
