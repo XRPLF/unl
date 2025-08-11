@@ -69,3 +69,5 @@ nodes:
     name: arrington-xrp-capital.blockdaemon.com
   - id: nHUcNC5ni7XjVYfCMe38Rm3KQaq27jw7wJpcUYdo4miWwpNePRTw
     name: cabbit.tech
+  - id: nHUxjxKPeErbN7pNk9UWA5Ee7ZPMtesSeRGJtmdqkTxe94tqM2YX
+    name: tequ.dev
