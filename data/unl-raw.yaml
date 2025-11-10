@@ -19,8 +19,6 @@ nodes:
     name: ripplevalidator.uwaterloo.ca
   - id: nHUFCyRCrUjvtZmKiLeF8ReopzKuUoKeDeXo3wEUBVSaawzcSBpW
     name: ripple.kenan-flagler.unc.edu
-  - id: nHUq9tJvSyoXQKhRytuWeydpPjvTz3M9GfUpEqfsg9xsewM7KkkK
-    name: students.cs.ucl.ac.uk
   - id: nHB8QMKGt9VB4Vg71VszjBVQnDW3v3QudM4DwFaJfy96bj4Pv9fA
     name: bithomp.com
   - id: nHBVACxZaNbUjZZkBfj7gRxF3xgG2vbcP4m48KzVwntdTogi5Tfs
@@ -55,8 +53,6 @@ nodes:
     name: xrp.unic.ac.cy
   - id: nHUvcCcmoH1FJMMC6NtF9KKA4LpCWhjsxk2reCQidsp5AHQ7QY9H
     name: jon-nilsen.no
-  - id: nHUpDEZX5Zy9auiu4yhDmhirNu6PyB1LvzQEL9Mxmqjr818w663q
-    name: xspectar.com
   - id: nHU3AenyRuJ4Yei4YHkh6frZg8y2RwXznkMAomUE1ptV5Spvqsih
     name: xrpl.aesthetes.art
   - id: nHDHzXZKtmMHCkTVgdWY4dqdigDrESiseUF8JkzE93DUtfbt6s3W
@@ -71,3 +67,5 @@ nodes:
     name: cabbit.tech
   - id: nHUUgpUVNxXfxkkoyh2QDjfLfHapcut8gYwKeShnJYd3SdPui19A
     name: peersyst.cloud
+  - id: nHUxjxKPeErbN7pNk9UWA5Ee7ZPMtesSeRGJtmdqkTxe94tqM2YX
+    name: tequ.dev
