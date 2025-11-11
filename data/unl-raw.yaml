@@ -47,8 +47,6 @@ nodes:
     name: xpmarket.com
   - id: nHUdjQgg33FRu88GQDtzLWRw95xKnBurUZcqPpe3qC9XVeBNrHeJ
     name: validator.xrpl.robertswarthout.com
-  - id: nHUtmbn4ALrdU6U8pmd8AMt4qKTdZTbYJ3u1LHyAzXga3Zuopv5Y
-    name: ""
   - id: nHUfPizyJyhAJZzeq3duRVrZmsTZfcLn7yLF5s2adzHdcHMb9HmQ
     name: xrp.unic.ac.cy
   - id: nHUvcCcmoH1FJMMC6NtF9KKA4LpCWhjsxk2reCQidsp5AHQ7QY9H
