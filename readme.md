@@ -2,6 +2,10 @@
 
 The XRP Ledger Foundation maintains a Unique Node List (UNL) for the XRPL. This repo is the source for the `UNL`, published at [https://unl.xrplf.org](https://unl.xrplf.org/).
 
+## Guides
+
+- [UNL application guide](docs/UNL-application-guide.md) — Draft proposal describing requirements and the application process for inclusion on the UNL.
+
 ## Editing the UNL
 
 The process of creating an updated signed UNL is outlined below.
