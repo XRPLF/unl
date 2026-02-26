@@ -87,9 +87,11 @@ Decentralization is a core goal. The Foundation actively seeks a distributed and
 
 **Soft/Qualitative Factors**
 
-  - **Active on socials** | Engagement with the community and transparency. |
-  - **Long-term Commitment** | Demonstrated long-term commitment to the network's health. |
-  - **Stewardship** | Prioritizing the network's long-term integrity, decentralization, and shared success through thoughtful governance and reliable node operation.
+| Factor                 | Description                                                                                                                                    |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Active on socials**  | Engagement with the community and transparency.                                                                                                |
+| **Long-term Commitment** | Demonstrated long-term commitment to the network's health.                                                                                  |
+| **Stewardship**        | Prioritizing the network's long-term integrity, decentralization, and shared success through thoughtful governance and reliable node operation. |
 
 **4. Monitoring Performance and The Final Decision**
 This section describes how validator performance is monitored and how final UNL decisions are made.
