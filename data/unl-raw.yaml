@@ -39,8 +39,6 @@ nodes:
     name: xrpscan.com
   - id: nHUrUNXCy4DgPPNABX9C6mUctpoq7CwgLKAUxjw6zYtTfiqsj1ew
     name: xrp-validator.interledger.org
-  - id: nHUpDPFoCNysckDSHiUBEdDXRu2iYLUgYjTzrj3bde5iDRkNtY8f
-    name: validator.poli.usp.br
   - id: nHUP4RcLQdPHh3kMtFm9NFGnjEYLGXiQAyyB7qFsjATHMw2YVxHi
     name: xpmarket.com
   - id: nHUdjQgg33FRu88GQDtzLWRw95xKnBurUZcqPpe3qC9XVeBNrHeJ
