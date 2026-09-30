@@ -57,8 +57,6 @@ nodes:
     name: ripple.com
   - id: nHUED59jjpQ5QbNhesXMhqii9gA8UfbBmv3i5StgyxG98qjsT4yn
     name: arrington-xrp-capital.blockdaemon.com
-  - id: nHUcNC5ni7XjVYfCMe38Rm3KQaq27jw7wJpcUYdo4miWwpNePRTw
-    name: cabbit.tech
   - id: nHUUgpUVNxXfxkkoyh2QDjfLfHapcut8gYwKeShnJYd3SdPui19A
     name: peersyst.cloud
   - id: nHUxjxKPeErbN7pNk9UWA5Ee7ZPMtesSeRGJtmdqkTxe94tqM2YX
