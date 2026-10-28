@@ -30,6 +30,17 @@ Beyond core operational uptime, candidates are strongly encouraged to actively p
       - Even though non-UNL votes do not count toward the formal amendment process, this establishes a clear, observable track record.
   - Community Engagement: Active participation in community discussions and testing efforts to demonstrate a long-term commitment to the network's health and evolution.
 
+**Communications**
+
+Running a UNL validator means being reachable, not just online. Most day to day coordination between operators happens on the XRP Ledger Discord.
+
+  - **Join:** [https://discord.gg/xrpl](https://discord.gg/xrpl)
+  - **Channel:** [#validators-nodes-xrpld](https://discord.com/channels/886050993802985492/886053414289682522), where node operators and validators discuss releases, amendments and network issues.
+
+We expect applicants to be in that channel before they apply, and UNL operators to stay in it. It is where you should give advance notice of planned maintenance or downtime, and where you will usually be contacted first if something looks wrong with your validator. Make sure at least one person on your team reads it regularly, and more than one if your team spans timezones.
+
+This is also part of what **Active on socials** in section 3 is measuring. Being visible and responsive here counts.
+
 **2. The Application Process**
 
 Once you believe your validator is stable and you meet the operational requirements, you can formally apply for consideration.
@@ -87,7 +98,7 @@ Decentralization is a core goal. The Foundation actively seeks a distributed and
 
 | Factor                 | Description                                                                                                                                    |
 | :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Active on socials**  | Engagement with the community and transparency.                                                                                                |
+| **Active on socials**  | Engagement with the community and transparency, including presence in the operator channel on Discord.                                         |
 | **Long-term Commitment** | Demonstrated long-term commitment to the network's health.                                                                                  |
 | **Stewardship**        | Prioritizing the network's long-term integrity, decentralization, and shared success through thoughtful governance and reliable node operation. |
 
